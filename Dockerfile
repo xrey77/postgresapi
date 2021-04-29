@@ -1,36 +1,12 @@
-FROM golang:alpine AS builder
-
-# Set necessary environmet variables needed for our image
-ENV GO111MODULE=on \
-    CGO_ENABLED=0 \
-    GOOS=linux \
-    GOARCH=amd64
-
-# Move to working directory /build
-WORKDIR /build
-
-# Copy and download dependency using go mod
-COPY go.mod .
-COPY go.sum .
+FROM golang:1.14.6-alpine3.12 as builder
+COPY go.mod go.sum /go/src/gitlab.com/xrey77/postgresapi/
+WORKDIR /go/src/gitlab.com/xrey77/postgresapi
 RUN go mod download
+COPY . /go/src/gitlab.com/xrey77/postgresapi
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o build/postgresapi gitlab.com/xrey77/postgresapi
 
-# Copy the code into the container
-COPY . .
-
-# Build the application
-RUN go build -o main .
-
-# Move to /dist directory as the place for resulting binary folder
-WORKDIR /dist
-
-# Copy binary from build to main folder
-RUN cp /build/main .
-
-# Build a small image
-FROM scratch
-
-COPY --from=builder /dist/main /
-
-
-# Command to run
-ENTRYPOINT ["/main"]
+FROM alpine
+RUN apk add --no-cache ca-certificates && update-ca-certificates
+COPY --from=builder /go/src/gitlab.com/xrey77/postgresapi/build/postgresapi /usr/bin/postgresapi
+EXPOSE 8080 8080
+ENTRYPOINT ["/usr/bin/postgresapi"]
