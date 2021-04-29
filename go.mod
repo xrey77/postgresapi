@@ -1,4 +1,4 @@
-module github.com/xrey77/postgresapi
+module postgresapi
 
 go 1.14
 
