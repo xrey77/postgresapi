@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"postgresapi/utils"
 	"strings"
+
+	"github.com/xrey77/postgresapi/utils"
 
 	"github.com/dgrijalva/jwt-go"
 )

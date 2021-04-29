@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"postgresapi/api"
+
+	"github.com/xrey77/postgresapi/api"
 
 	"github.com/gorilla/mux"
 )
@@ -19,7 +20,7 @@ func Cors(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
-	// w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers,Content-Type")
 }
 

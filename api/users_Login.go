@@ -6,7 +6,8 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"postgresapi/utils"
+
+	"github.com/xrey77/postgresapi/utils"
 
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
